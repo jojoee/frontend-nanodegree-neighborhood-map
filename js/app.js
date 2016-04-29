@@ -64,6 +64,24 @@
 
     // location
     this.locations = ko.observableArray([]);
+    this.locationCompare = function(a,b) {
+      if (a.name < b.name) {
+        return -1;
+
+      } else if (a.name > b.name) {
+        return 1;
+
+      } else {
+        return 0;
+      }
+    };
+
+    // http://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value-in-javascript
+    this.sortInitialLocations = function() {
+      initialLocations.sort(this.locationCompare);
+    };
+    this.sortInitialLocations();
+
     var nInitialLocations = initialLocations.length;
     for (i = 0; i < nInitialLocations; i++) {
       var location = new Location(initialLocations[i]);
