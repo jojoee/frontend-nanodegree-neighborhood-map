@@ -1,0 +1,27 @@
+{
+  "name": "frontend-nanodegree-neighborhood-map",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jojoee/frontend-nanodegree-neighborhood-map.git"
+  },
+  "keywords": [
+    "knockout",
+    "SPA",
+    "map",
+    "google map"
+  ],
+  "author": "Nathachai Thongniran",
+  "bugs": {
+    "url": "https://github.com/jojoee/frontend-nanodegree-neighborhood-map/issues"
+  },
+  "homepage": "https://github.com/jojoee/frontend-nanodegree-neighborhood-map#readme",
+  "devDependencies": {
+    "browser-sync": "^2.10.1",
+    "gulp": "^3.9.0"
+  },
+  "scripts": {
+    "test": "karma start karma.conf.js",
+    "test-single-run": "karma start karma.conf.js  --single-run",
+    "start": "gulp default"
+  }
+}
