@@ -49,6 +49,7 @@
     this.name = loc.name;
     this.lat = loc.lat;
     this.lng = loc.lng;
+    this.type = loc.type;
     this.desc = loc.desc;
   };
 
@@ -113,7 +114,8 @@
     this.setInfoWindowHtml = function(loc) {
       var html = '<div class="info-content">';
         html += '<h3>' + loc.name + '</h3>';
-        html += '<p>' + loc.desc + '</div>';
+        html += '<p>type: ' + loc.type + '</p>';
+        html += '<p>' + loc.desc + '</p>';
         html += '</div>';
 
       self.infoWindow.setContent(html);
