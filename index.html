@@ -21,12 +21,6 @@
         data-bind="value: search, valueUpdate: 'afterkeydown'"
         placeholder="Location">
 
-      <ul data-bind="foreach: locations">
-        <li data-bind="text: $data.name, click: $parent.setLocation"></li>
-      </ul>
-
-      <hr>
-
       <ul data-bind="foreach: filteredLocations">
         <li data-bind="text: $data.name"></li>
       </ul>
