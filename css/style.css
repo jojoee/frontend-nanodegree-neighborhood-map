@@ -7,3 +7,25 @@ dark: #222;
   width: 100%;
   height: 600px;
 }
+
+ul {
+
+}
+
+li {
+  cursor: pointer;
+}
+
+li.active,
+li:hover {
+  background-color: #222;
+  color: #fff;
+}
+
+.info-content {
+
+}
+
+.info-content h3 {
+  margin: 10px 0;
+}
