@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Frontend Nanodegree Neighborhood Map</title>
+  <title>Frontend Nanodegree Neighborhood Map - Sushi Finder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/blue/pace-theme-flash.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
@@ -13,7 +13,7 @@
 <body>
   <div class="page">
     <section class="col-md-3">
-      <h1>Neighborhood Map</h1>
+      <h1>Sushi Finder</h1>
       
       <input type="text"
         id="search"
@@ -22,7 +22,7 @@
         placeholder="Location">
 
       <ul data-bind="foreach: filteredLocations">
-        <li data-bind="text: $data.name"></li>
+        <li data-bind="text: $data.name, click: $parent.popupLocation, attr: { id: $data.id, title: $data.name }"></li>
       </ul>
     </section>
 
@@ -31,6 +31,7 @@
     </section>
   </div>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCYHhf5R0s17WcAkh-v57-6tSGCaeSNXs"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.4.0/localforage.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
   <script src="js/map-style.js"></script>
   <script src="js/data.js"></script>
