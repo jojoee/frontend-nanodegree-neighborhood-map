@@ -467,4 +467,6 @@ var ViewModel = function() {
   });
 };
 
-ko.applyBindings(new ViewModel());
+function initApp() {
+  ko.applyBindings(new ViewModel());
+}
