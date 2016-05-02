@@ -5,6 +5,7 @@
 // constant
 var APP_KEY = 'fendnm',
   FOURSQUARE_ACCESS_TOKEN = '51PLJOYW50B02CNWXRTQFJKRVHS1DUGJ1KENQROSEFVUU1GD',
+  FOURSQUARE_CLIENT_ID = '0TCYQ2BE4YEFBDE51SMCHXCMPVTRPYLOYE1XLF5IZOU5BB50',
   FOURSQUARE_VERSIONING = '20130815';
 
 // globar variable
@@ -410,6 +411,14 @@ var ViewModel = function() {
     request.send();
   };
 
+  this.getSushiShopUrl = function(shopId) {
+    var shopUrl = 'https://foursquare.com/v/%SHOP_ID%?ref=%CLIENT_ID%';
+    shopUrl = shopUrl.replace('%SHOP_ID%', shopId);
+    shopUrl = shopUrl.replace('%CLIENT_ID%', FOURSQUARE_CLIENT_ID);
+
+    return shopUrl;
+  };
+
   // add sushi shop into DOM
   this.addSushiShopsFromResponse = function(res) {
     var maxN = 10,
@@ -418,7 +427,7 @@ var ViewModel = function() {
     // clear $shops
     $shops.innerHTML = '';
     for (i = 0; i < maxN; i++) {
-      var $shop = document.createElement('div'),
+      var $shop = document.createElement('a'),
         shop = items[i],
         shopId = shop.id,
         shopName = shop.name,
@@ -426,6 +435,10 @@ var ViewModel = function() {
         shopAddress = shop.location.formattedAddress;
 
       $shop.classList.add('shop');
+      var shopUrl = self.getSushiShopUrl(shopId);
+      $shop.setAttribute('href', shopUrl);
+      $shop.setAttribute('target', '_blank');
+      $shop.setAttribute('rel', 'nofollow');
       $shop.setAttribute('data-shop-id', shopId);
 
       $shop.appendChild(document.createTextNode('name: ' + shopName));

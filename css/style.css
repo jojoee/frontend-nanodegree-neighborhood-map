@@ -62,9 +62,20 @@ li:hover {
 }
 
 .shop {
+  display: block;
   text-overflow: ellipsis;
   padding: 6px;
   margin-bottom: 6px;
+  border-radius: 4px;
+}
+
+.shop,
+.shop:focus,
+.shop:visited,
+.shop.active {
+  text-decoration: none;
+  background-color: #fff;
+  color: #000;
 }
 
 .shop:last-child {
@@ -73,12 +84,12 @@ li:hover {
 
 .shop:nth-child(2n) {
   background-color: #f7f7f7;
-  border-radius: 4px;
 }
 
-.right {
-  height: 100%;
-  overflow: hidden;
+.shop:hover {
+  text-decoration: none;
+  background-color: #222;
+  color: #fff;
 }
 
 .nm-right {
