@@ -13,7 +13,7 @@
 </head>
 <body>
   <div class="page">
-    <section class="col-md-3">
+    <section class="left col-md-3">
       <h1>Sushi Finder</h1>
       
       <input type="text"
@@ -25,9 +25,13 @@
       <ul data-bind="foreach: filteredLocations">
         <li data-bind="text: $data.name, click: $parent.popupLocation, attr: { id: $data.id, title: $data.name }"></li>
       </ul>
+
+      <div class="shops">
+        
+      </div>
     </section>
 
-    <section class="col-md-9">
+    <section class="right col-md-9">
       <div id="map"></div>
     </section>
   </div>

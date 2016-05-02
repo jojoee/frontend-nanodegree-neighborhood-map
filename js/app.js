@@ -1,17 +1,18 @@
 (function() {
   'use strict';
 
-  var isDebug = true,
-    $search = document.getElementById('search'),
-    $map = document.getElementById('map'),
-    hasOwnProperty = Object.prototype.hasOwnProperty,
-    i = 0,
-    j = 0;
-
   // constant
   var APP_KEY = 'fendnm',
     FOURSQUARE_ACCESS_TOKEN = '51PLJOYW50B02CNWXRTQFJKRVHS1DUGJ1KENQROSEFVUU1GD',
     FOURSQUARE_VERSIONING = '20130815';
+
+  var isDebug = true,
+    $search = document.getElementById('search'),
+    $map = document.getElementById('map'),
+    $shops = document.getElementsByClassName('shops')[0],
+    hasOwnProperty = Object.prototype.hasOwnProperty,
+    i = 0,
+    j = 0;
 
   /*================================================================ UTIL
   */
@@ -335,36 +336,28 @@
     };
 
     this.fetchSushi = function(loc) {
-      console.log('fetchSushi');
       var key = self.getSushiKey(loc);
 
       localforage.getItem(key.ts, function(err, value) {
         var recordedDate = value;
         var todayDate = getTodayDate().getTime();
 
-        console.log(recordedDate);
-        console.log(todayDate);
-
         // not more than 1 day
         // then using local data
         if (recordedDate > todayDate) {
-          console.log('fetchSushi - using local data')
           localforage.getItem(key.data, function(err, value) {
-            self.markSushi(value);
+            self.addSushiShopsFromResponse(value);
           });
 
         // older than 1 day
         // fetch a new data
         } else {
-          console.log('fetchSushi - fetch new data');
           self.fetchFoursquare(loc, 'sushi');
         }
       });
     };
 
     this.fetchFoursquare = function(loc, query) {
-      console.log('fetchFoursquare');
-
       var requestUrl = 'https://api.foursquare.com/v2/venues/search?oauth_token=%TOKEN%&v=%VERSIONING%&ll=%LAT%,%LNG%&query=%QUERY%';
       requestUrl = requestUrl.replace('%TOKEN%', FOURSQUARE_ACCESS_TOKEN);
       requestUrl = requestUrl.replace('%VERSIONING%', FOURSQUARE_VERSIONING);
@@ -377,29 +370,28 @@
 
     // http://stackoverflow.com/questions/8567114/how-to-make-an-ajax-call-without-jquery
     this.fetchUrl = function(loc, url) {
-      console.log('fetchUrl');
       var request = new XMLHttpRequest();
       request.open('GET', url, true);
 
       request.onload = function() {
-        console.log('fetchUrl - onload');
-
         // success
         if (request.status >= 200 && request.status < 400) {
-          console.log('fetchUrl - onload - success', request);
 
           self.saveSushi(loc, request.responseText);
-          self.markSushi(request.responseText);
+          self.addSushiShopsFromResponse(request.responseText);
 
         } else {
           // We reached our target server, but it returned an error
-          console.log('fetchUrl - onload', request);
+          sweetAlert(
+            'Oops...',
+            'Something went wrong!',
+            'error'
+          );
         }
       };
 
       request.onerror = function() {
         // There was a connection error of some sort
-        console.log('fetchUrl - onerror');
         sweetAlert(
           'Oops...',
           'Something went wrong!',
@@ -410,45 +402,56 @@
       request.send();
     };
 
-    this.markSushi = function(res) {
-      console.log('markSushi');
+    this.addSushiShopsFromResponse = function(res) {
       var maxN = 10,
-        html = '',
         res = JSON.parse(res),
         meta = res.meta,
         items = res.response.venues;
 
+      // clear $shops
+      $shops.innerHTML = '';
       for (i = 0; i < maxN; i++) {
-        var shop = items[i],
+        var $shop = document.createElement('div'),
+          shop = items[i],
+          shopId = shop.id,
           shopName = shop.name,
           shopPhone = shop.contact.formattedPhone,
           shopAddress = shop.location.formattedAddress,
-          shopLat = shop.location.lat,
-          shopLng = shop.location.lng;
+          shopLat = shop.location.lat, // unused
+          shopLng = shop.location.lng; // unused
 
-        html += '<p>';
-        html += 'name: ' + shopName + '<br>';
-        html += 'phone: ' + shopPhone + '<br>';
-        html += 'address: ' + shopAddress + '<br>';
-        html += 'lat: ' + shopLat + '<br>';
-        html += 'lng: ' + shopLng;
+        $shop.classList.add('shop');
+        $shop.setAttribute('data-shop-id', shopId);
+
+        $shop.appendChild(document.createTextNode('name: ' + shopName));
+        $shop.appendChild(document.createElement('br'));
+
+        if (shopPhone) {
+          $shop.appendChild(document.createTextNode('phone: ' + shopPhone));
+          $shop.appendChild(document.createElement('br'));
+        }
+
+        if (shopAddress) {
+          $shop.appendChild(document.createTextNode('address: ' + shopAddress));
+          $shop.appendChild(document.createElement('br'));
+        }
+
+        // append into $shops
+        $shops.appendChild($shop);
       }
-
-      console.log(html);
     };
 
     this.saveSushi = function(loc, responseText) {
-      console.log('saveSushi');
       var key = self.getSushiKey(loc);
 
       localforage.setItem(key.data, responseText, function() {
-        console.log('saveSushi - data', key.data, responseText);
+        // nothing
       });
 
       var tmr = getTomorrowDate();
       var tmrTime = tmr.getTime();
       localforage.setItem(key.ts, tmrTime, function() {
-        console.log('saveSushi - tsdata', key.ts, tmrTime);
+        // nothing
       });
     };
 
