@@ -2,7 +2,10 @@
 Neighborhood Map project for [Front-End Web Developer Nanodegre](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd001), and this is [Project Rubric](https://review.udacity.com/#!/projects/2711658591/rubric)
 
 ## Getting Started
-Open index.html file in your browser or review online [here](http://jojoee.github.io/frontend-nanodegree-neighborhood-map/)
+Open `index.html` file in your browser or review online [here](http://jojoee.github.io/frontend-nanodegree-neighborhood-map/)
+
+## How it's work
+Upon clicking the location (either list or marker), then it'll popup information on the marker and list the `sushi` near it on left-sidebar.
 
 ## Setup task runner for devloper
 1. Go to project's root directory
@@ -27,10 +30,18 @@ Open index.html file in your browser or review online [here](http://jojoee.githu
 - [ ] Implement [Yelp API](https://www.yelp.com/developers/documentation/v2/overview)
 - [ ] Implement [Wikipedia](https://www.mediawiki.org/wiki/API:Main_page)
 - [ ] Implement [Instagram](https://www.instagram.com/developer/)
+- [ ] Check empty object before render it (on `addSushiShopsFromResponse` function)
+- [ ] List view toggle-able
+- [ ] Implement `knockout` "css" binding on `li` element ([reference](http://knockoutjs.com/documentation/css-binding.html))
+- [ ] Store `map-style` data into `localForage`
+- [ ] Add loading screen (or message, animation) while loading sushi shop from `Foursquare`
+- [ ] Fix hover effect on `li` when google map can not be loaded
+- [ ] Implement [browserify](http://browserify.org/) or [webpack](https://webpack.github.io/)
 - [x] Error Free
 - [x] Tell the user (e.g. text or popup) when we can not connect 3rd-party or get error from it
 - [x] Update README file
 - [x] Add comments
+- [ ] Fix JSHint
 - [x] Implement [SweetAlert2](http://limonte.github.io/sweetalert2/)
 - [ ] Implement template engine
 - [x] Implement [pace](http://github.hubspot.com/pace/docs/welcome/)
