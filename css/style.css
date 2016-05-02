@@ -20,7 +20,7 @@ body {
   height: 100%;
 }
 
-.left {
+.nm-left {
   height: 100%;
   overflow-y: scroll;
   padding-bottom: 12px;
@@ -75,7 +75,9 @@ li:hover {
   overflow: hidden;
 }
 
-.right {
+.nm-right {
+  height: 100%;
+  overflow: hidden;
   padding: 0; /* hack */
 }
 
