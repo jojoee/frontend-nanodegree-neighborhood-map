@@ -26,6 +26,12 @@ body {
   padding-bottom: 12px;
 }
 
+.credit {
+  font-size: 12px;
+  font-family: sans-serif, serif, arial;
+  margin-bottom: 12px;
+}
+
 #search {
   box-sizing: border-box;
   width: 100%;
