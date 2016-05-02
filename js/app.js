@@ -400,6 +400,11 @@
       request.onerror = function() {
         // There was a connection error of some sort
         console.log('fetchUrl - onerror');
+        sweetAlert(
+          'Oops...',
+          'Something went wrong!',
+          'error'
+        );
       };
 
       request.send();
