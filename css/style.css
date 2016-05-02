@@ -1,5 +1,5 @@
 /*
-accent: #2281e5;
+accent: #2281e5; // unused
 light-grey: #f7f7f7;
 grey: #ececec;
 dark: #222;
@@ -42,7 +42,8 @@ body {
 
 ul {
   list-style: none;
-  padding: 0 0 12px 6px;
+  padding: 0;
+  padding-bottom: 12px;
   border-bottom: 1px solid #ececec;
 }
 
