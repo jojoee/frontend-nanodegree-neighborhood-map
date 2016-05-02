@@ -53,3 +53,4 @@ Open index.html file in your browser or review online [here](http://jojoee.githu
 - Google map event - [Simple click event](https://developers.google.com/maps/documentation/javascript/examples/event-simple)
 - [Google map marker](https://developers.google.com/maps/documentation/javascript/markers) - [Custom Markers](https://developers.google.com/maps/tutorials/customizing/custom-markers), [Marker Animations](https://developers.google.com/maps/documentation/javascript/examples/marker-animations), [Simple markers](https://developers.google.com/maps/documentation/javascript/examples/marker-simple), [Remove Markers](https://developers.google.com/maps/documentation/javascript/examples/marker-remove)
 - [Google map info windows](https://developers.google.com/maps/documentation/javascript/infowindows)- [Info window](https://developers.google.com/maps/documentation/javascript/examples/infowindow-simple)
+- [jshint.com](http://jshint.com/)

@@ -1,3 +1,5 @@
+/* globals ko, google, initialLocations, mapStyle, sweetAlert, localforage */
+
 (function() {
   'use strict';
 
@@ -7,12 +9,10 @@
     FOURSQUARE_VERSIONING = '20130815';
 
   // globar variable
-  var $search = document.getElementById('search'),
-    $map = document.getElementById('map'),
+  var $map = document.getElementById('map'),
     $shops = document.getElementsByClassName('shops')[0],
     hasOwnProperty = Object.prototype.hasOwnProperty,
-    i = 0,
-    j = 0;
+    i = 0;
 
   /*================================================================ UTIL
   */
@@ -74,7 +74,7 @@
    */
   function isEmpty(obj) {
     // null and undefined are "empty"
-    if (obj == null) return true;
+    if (obj === null) return true;
 
     // Assume if it has a length property with a non-zero value
     // that that property is correct.
@@ -96,7 +96,7 @@
 
   // location object
   var Location = function(loc) {
-    this.id = loc.id,
+    this.id = loc.id;
     this.name = loc.name;
     this.lat = loc.lat;
     this.lng = loc.lng;
@@ -414,9 +414,7 @@
     // add sushi shop into DOM
     this.addSushiShopsFromResponse = function(res) {
       var maxN = 10,
-        res = JSON.parse(res),
-        meta = res.meta,
-        items = res.response.venues;
+        items = JSON.parse(res).response.venues;
 
       // clear $shops
       $shops.innerHTML = '';
@@ -426,9 +424,7 @@
           shopId = shop.id,
           shopName = shop.name,
           shopPhone = shop.contact.formattedPhone,
-          shopAddress = shop.location.formattedAddress,
-          shopLat = shop.location.lat, // unused
-          shopLng = shop.location.lng; // unused
+          shopAddress = shop.location.formattedAddress;
 
         $shop.classList.add('shop');
         $shop.setAttribute('data-shop-id', shopId);
