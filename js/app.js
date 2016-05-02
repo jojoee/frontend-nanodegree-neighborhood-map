@@ -6,8 +6,8 @@
     FOURSQUARE_ACCESS_TOKEN = '51PLJOYW50B02CNWXRTQFJKRVHS1DUGJ1KENQROSEFVUU1GD',
     FOURSQUARE_VERSIONING = '20130815';
 
-  var isDebug = true,
-    $search = document.getElementById('search'),
+  // globar variable
+  var $search = document.getElementById('search'),
     $map = document.getElementById('map'),
     $shops = document.getElementsByClassName('shops')[0],
     hasOwnProperty = Object.prototype.hasOwnProperty,
@@ -18,14 +18,14 @@
   */
   
   /**
-   * [isStringContains description]
+   * Check if string contain `needle`
    *
    * @see http://stackoverflow.com/questions/1789945/how-can-i-check-if-one-string-contains-another-substring
    * @see http://stackoverflow.com/questions/3480771/how-do-i-check-if-string-contains-substring
    * 
-   * @param  {[type]}  str    [description]
-   * @param  {[type]}  needle [description]
-   * @return {Boolean}        [description]
+   * @param  {String}  str
+   * @param  {String}  needle
+   * @return {Boolean}
    */
   function isStringContains(str, needle) {
     return str.indexOf(needle) > -1;
@@ -42,7 +42,6 @@
       avgCoord.lat += locs[i].lat;
       avgCoord.lng += locs[i].lng;
     }
-
     avgCoord.lat /= nLocs;
     avgCoord.lng /= nLocs;
 
@@ -65,13 +64,13 @@
   }
 
   /**
-   * [isEmpty description]
+   * Check variable is empty or not
    *
    * @see http://stackoverflow.com/questions/4994201/is-object-empty
    * @see http://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
    * 
-   * @param  {[type]}  obj [description]
-   * @return {Boolean}     [description]
+   * @param  {Object}  obj
+   * @return {Boolean}
    */
   function isEmpty(obj) {
     // null and undefined are "empty"
@@ -91,11 +90,11 @@
 
     return true;
   }
-
  
   /*================================================================ MODEL
   */
 
+  // location object
   var Location = function(loc) {
     this.id = loc.id,
     this.name = loc.name;
@@ -129,9 +128,14 @@
         return 0;
       }
     };
-
-    // sort by name
-    // http://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value-in-javascript
+    
+    /**
+     * Sort `Location` by name
+     *
+     * @see http://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value-in-javascript
+     * 
+     * @return {[type]} [description]
+     */
     this.sortInitialLocationsByName = function() {
       initialLocations.sort(this.locationCompare);
     };
@@ -153,8 +157,6 @@
         var locations = self.locations();
         var nLocations = locations.length;
 
-        // alternative
-        // ko.utils.arrayFilter
         for (i = 0; i < nLocations; i++) {
           var locationName = locations[i].name.toLowerCase();
 
@@ -169,9 +171,11 @@
       return self.locations();
     });
 
-    // subscribe will run after
-    // it's filtered
+    // subscribe will run after it's filtered
     this.filteredLocations.subscribe(function() {
+      // clear $shops
+      $shops.innerHTML = '';
+
       // reset currentLocation
       if (!isEmpty(self.currentLocation)) {
         var $currentLoc = document.getElementById(self.currentLocation.id);
@@ -207,6 +211,7 @@
       maxWidth: 320
     });
 
+    // set infor window content
     this.setInfoWindowHtml = function(loc) {
       var html = '<div class="info-content">';
         html += '<h3>' + loc.name + '</h3>';
@@ -219,6 +224,8 @@
 
     // marker
     this.markers = [];
+
+    // stop animation of all markers
     this.stopAllMarkerAnimations = function() {
       var nMarker = self.markers.length;
 
@@ -227,10 +234,12 @@
       }
     };
 
+    // stop animation of specific marker
     this.stopMarkerAnimation = function(marker) {
       marker.setAnimation(null);
     };
 
+    // start animation
     this.startMarkerAnimation = function(marker) {
       marker.setAnimation(google.maps.Animation.BOUNCE);
     };
@@ -246,31 +255,13 @@
       });
 
       marker.addListener('click', function() {
-        // animate marker
-        self.stopAllMarkerAnimations();
-        self.startMarkerAnimation(marker);
-
-        if (!isEmpty(self.currentLocation)) {
-          var $previousLoc = document.getElementById(self.currentLocation.id);
-          $previousLoc.classList.remove('active');
-        }
-
-        // set current location
-        self.currentLocation = loc;
-        var $currentLoc = document.getElementById(self.currentLocation.id);
-        $currentLoc.classList.add('active');
-
-        // popup info window
-        self.setInfoWindowHtml(loc);
-        self.infoWindow.open(self.map, marker);
-
-        // fetch foursquare
-        self.fetchSushi(loc);
+        self.popupLocation(loc, marker);
       });
       
       self.markers.push(marker);
     };
 
+    // add markers into the map
     this.addMarkers = function(locs) {
       var nLocs = locs.length;
 
@@ -279,6 +270,7 @@
       }
     };
 
+    // remove all markers
     this.removeAllMarkers = function() {
       var nMarkers = self.markers.length;
 
@@ -302,14 +294,20 @@
       return 0;
     };
 
-    this.popupLocation = function(loc) {
+    // fire when user client on the list only
+    this.setLocation = function(loc) {
       var idx = self.getFilteredLocationIndexById(loc.id);
       var marker = self.markers[idx];
 
+      self.popupLocation(loc, marker);
+    };
+
+    this.popupLocation = function(loc, marker) {
       // animate marker
       self.stopAllMarkerAnimations();
       self.startMarkerAnimation(marker);
 
+      // remove class from previous location item (on the list)
       if (!isEmpty(self.currentLocation)) {
         var $previousLoc = document.getElementById(self.currentLocation.id);
         $previousLoc.classList.remove('active');
@@ -317,6 +315,8 @@
 
       // set current location
       self.currentLocation = loc;
+
+      // add class into current location item (on the list)
       var $currentLoc = document.getElementById(self.currentLocation.id);
       $currentLoc.classList.add('active');
       
@@ -328,6 +328,7 @@
       self.fetchSushi(loc);
     };
 
+    // get sushi key for `localforage` plugin
     this.getSushiKey = function(loc) {
       return {
         'data': APP_KEY + loc.id,
@@ -335,9 +336,11 @@
       };
     };
 
+    // fetch sushi shop data
     this.fetchSushi = function(loc) {
       var key = self.getSushiKey(loc);
 
+      // check date of recorded data
       localforage.getItem(key.ts, function(err, value) {
         var recordedDate = value;
         var todayDate = getTodayDate().getTime();
@@ -352,32 +355,38 @@
         // older than 1 day
         // fetch a new data
         } else {
-          self.fetchFoursquare(loc, 'sushi');
+          self.fetchFoursquare('sushi');
         }
       });
     };
 
-    this.fetchFoursquare = function(loc, query) {
+    // fetch data from `Foursquare`
+    this.fetchFoursquare = function(query) {
       var requestUrl = 'https://api.foursquare.com/v2/venues/search?oauth_token=%TOKEN%&v=%VERSIONING%&ll=%LAT%,%LNG%&query=%QUERY%';
       requestUrl = requestUrl.replace('%TOKEN%', FOURSQUARE_ACCESS_TOKEN);
       requestUrl = requestUrl.replace('%VERSIONING%', FOURSQUARE_VERSIONING);
-      requestUrl = requestUrl.replace('%LAT%', loc.lat);
-      requestUrl = requestUrl.replace('%LNG%', loc.lng);
+      requestUrl = requestUrl.replace('%LAT%', self.currentLocation.lat);
+      requestUrl = requestUrl.replace('%LNG%', self.currentLocation.lng);
       requestUrl = requestUrl.replace('%QUERY%', query);
 
-      self.fetchUrl(loc, requestUrl);
+      self.fetchUrl(requestUrl);
     };
 
-    // http://stackoverflow.com/questions/8567114/how-to-make-an-ajax-call-without-jquery
-    this.fetchUrl = function(loc, url) {
+    /**
+     * Fetch data from URL
+     *
+     * @see http://stackoverflow.com/questions/8567114/how-to-make-an-ajax-call-without-jquery
+     * 
+     * @param  {String}   url
+     */
+    this.fetchUrl = function(url) {
       var request = new XMLHttpRequest();
       request.open('GET', url, true);
 
       request.onload = function() {
         // success
         if (request.status >= 200 && request.status < 400) {
-
-          self.saveSushi(loc, request.responseText);
+          self.saveSushi(self.currentLocation, request.responseText);
           self.addSushiShopsFromResponse(request.responseText);
 
         } else {
@@ -402,6 +411,7 @@
       request.send();
     };
 
+    // add sushi shop into DOM
     this.addSushiShopsFromResponse = function(res) {
       var maxN = 10,
         res = JSON.parse(res),
@@ -425,12 +435,10 @@
 
         $shop.appendChild(document.createTextNode('name: ' + shopName));
         $shop.appendChild(document.createElement('br'));
-
         if (shopPhone) {
           $shop.appendChild(document.createTextNode('phone: ' + shopPhone));
           $shop.appendChild(document.createElement('br'));
         }
-
         if (shopAddress) {
           $shop.appendChild(document.createTextNode('address: ' + shopAddress));
           $shop.appendChild(document.createElement('br'));
@@ -441,6 +449,7 @@
       }
     };
 
+    // save sushi data into `localforage`
     this.saveSushi = function(loc, responseText) {
       var key = self.getSushiKey(loc);
 
@@ -455,6 +464,7 @@
       });
     };
 
+    // add initial marker into map
     this.addMarkers(this.filteredLocations());
     
     google.maps.event.addListener(this.map, 'click', function(ev) {

@@ -23,7 +23,7 @@
         placeholder="Location">
 
       <ul data-bind="foreach: filteredLocations">
-        <li data-bind="text: $data.name, click: $parent.popupLocation, attr: { id: $data.id, title: $data.name }"></li>
+        <li data-bind="text: $data.name, click: $parent.setLocation, attr: { id: $data.id, title: $data.name }"></li>
       </ul>
 
       <div class="shops">
